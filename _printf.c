@@ -14,7 +14,7 @@ int _printf(const char *format, ...)
 {
 	va_list args;
 	int i, len = 0, fix = 0, lenn = 0;
-	char *s, c, modu, bracket = ']', *newline = "\n";
+	char *s, c, bracket = ']', *newline = "\n";
 
 	va_start(args, format);
 	while (format[len])
@@ -42,14 +42,10 @@ int _printf(const char *format, ...)
 			lenn = strlen(s);
 			write(1, s, lenn);
 		}
-		if (format[i] == '%' && format[i + 1] == '%')
-		{
-			write(1, &modu, 1);
-		}
 	}
 	write(1, &bracket, 1);
 	write(1, newline, 1);
 	va_end(args);
 
-	return (0);
+	return (len - 1);
 }
