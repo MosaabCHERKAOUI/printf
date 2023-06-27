@@ -17,6 +17,8 @@ int _printf(const char *format, ...)
 
 	va_start(args, format);
 	len = strlen(format);
+	if (!format || (format[0] == '%' && !format[1]))
+		return (-1);
 	for (i = 0; i < len; i++)
 	{
 		if (format[i] != '%')
