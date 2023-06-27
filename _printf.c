@@ -1,52 +1,54 @@
 #include <stdarg.h>
-#include <string.h>
-#include <unistd.h>
 #include <stdio.h>
 #include "main.h"
+#include <string.h>
 
 /**
- * _printf - my printf
- * @format: strings
- * @...: s, c, %
- * Return: 0
+ * _printf - my own printf
+ * @format: is character string
+ *
+ * Return: lenght
  */
 int _printf(const char *format, ...)
 {
+	int sum = 0, len = 0, i;
 	va_list args;
-	int i, len = 0, fix = 0, lenn = 0, len3 = 0;
-	char *s, c, bracket = ']', *newline = "\n";
+	char c, *s;
 
 	va_start(args, format);
-	while (format[len])
-		len++;
 
-	for (i = 0; i < len; i++)
-		if (format[i] == '%')
-		{
-			fix = i;
-		}
+	len = strlen(format);
 
-	write(1, format, fix);
-
-	for (i = 0; i < len; i++)
+	for (i = 0; i < len - 1; i++)
 	{
-		if (format[i] == '%' && format[i + 1] == 'c')
+		if (format[i] != '%')
 		{
-			c = va_arg(args, int);
-			len3++;
-			write(1, &c, 1);
+			_putchar(format[i]);
+			sum++;
 		}
 		else if (format[i] == '%' && format[i + 1] == 's')
 		{
 			s = va_arg(args, char*);
-			len3 = strlen(s);
-			lenn = strlen(s);
-			write(1, s, lenn);
+			write(1, s, strlen(s));
+			sum += strlen(s);
+			i++;
+		}
+		else if (format[i] == '%' && format[i + 1] == 'c')
+		{
+			c = va_arg(args, int);
+			write(1, &c, 1);
+			sum++;
+			i++;
+		}
+		else if (format[i] == '%' && format[i + 1] == '%')
+		{
+			write(1, &format[i], 1);
+			sum++;
+			i++;
 		}
 	}
-	write(1, &bracket, 1);
-	write(1, newline, 1);
-	va_end(args);
+	_putchar('\n');
 
-	return (len - 2 + len3);
+	va_end(args);
+	return (sum);
 }
