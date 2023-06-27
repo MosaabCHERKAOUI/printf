@@ -16,9 +16,7 @@ int _printf(const char *format, ...)
 	char *s;
 
 	va_start(args, format);
-
 	len = strlen(format);
-
 	for (i = 0; i < len; i++)
 	{
 		if (format[i] != '%')
@@ -51,8 +49,6 @@ int _printf(const char *format, ...)
 			i++;
 		}
 	}
-
 	va_end(args);
-
 	return (sum);
 }
