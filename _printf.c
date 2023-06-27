@@ -11,15 +11,15 @@
  */
 int _printf(const char *format, ...)
 {
-	int sum = 0, len = 0, i;
+	int c, sum = 0, len = 0, i, len1 = 0, o;
 	va_list args;
-	char c, *s;
+	char *s;
 
 	va_start(args, format);
 
 	len = strlen(format);
 
-	for (i = 0; i < len - 1; i++)
+	for (i = 0; i < len; i++)
 	{
 		if (format[i] != '%')
 		{
@@ -28,27 +28,31 @@ int _printf(const char *format, ...)
 		}
 		else if (format[i] == '%' && format[i + 1] == 's')
 		{
-			s = va_arg(args, char*);
-			write(1, s, strlen(s));
-			sum += strlen(s);
+			s = va_arg(args, char *);
+			len1 = strlen(s);
+			for (o = 0; o < len1; o++)
+			{
+				_putchar(s[o]);
+				sum++;
+			}
 			i++;
 		}
 		else if (format[i] == '%' && format[i + 1] == 'c')
 		{
 			c = va_arg(args, int);
-			write(1, &c, 1);
+			_putchar(c);
 			sum++;
 			i++;
 		}
 		else if (format[i] == '%' && format[i + 1] == '%')
 		{
-			write(1, &format[i], 1);
+			_putchar('%');
 			sum++;
 			i++;
 		}
 	}
-	_putchar('\n');
 
 	va_end(args);
+
 	return (sum);
 }
