@@ -33,6 +33,11 @@ int _printf(const char *format, ...)
 
 	for (i = 0; i < len; i++)
 	{
+		if (format[i] == '%' && (format[i] <= 9 && format[i] >= 0))
+			return (-1);
+	}
+	for (i = 0; i < len; i++)
+	{
 		if (format[i] != '%')
 		{
 			_putchar(format[i]);
