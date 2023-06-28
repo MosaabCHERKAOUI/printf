@@ -54,9 +54,3 @@ int _printf(const char *format, ...)
 	va_end(args);
 	return (sum);
 }
-
-int main(void)
-{
-	_printf("a %c c\n", 'b');
-	_printf("%\n");
-}
