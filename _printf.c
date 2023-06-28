@@ -22,6 +22,7 @@ int _printf(const char *format, ...)
 	if (format[0] == '%' && format[1] == ' ' && !format[2])
 		return (-1);
 	for (i = 0; i < len; i++)
+	{
 		if (format[i] != '%')
 		{
 			_putchar(format[i]);
@@ -32,8 +33,10 @@ int _printf(const char *format, ...)
 			s = va_arg(args, char *);
 			len1 = strlen(s);
 			for (o = 0; o < len1; o++)
+			{
 				_putchar(s[o]);
 				sum++;
+			}
 			i++;
 		}
 		else if (format[i] == '%' && format[i + 1] == 'c')
@@ -49,6 +52,7 @@ int _printf(const char *format, ...)
 			sum++;
 			i++;
 		}
+	}
 	va_end(args);
 	return (sum);
 }
