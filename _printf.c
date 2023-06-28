@@ -19,7 +19,7 @@ int _printf(const char *format, ...)
 
 	len = strlen(format);
 
-	if (!format || (format[0] == '%' && !format[1]))
+	if (!format || (format[0] == '%' && !format[1]) || (format[0] == '%' && format[1] == '\0'))
 		return (-1);
 
 	for (i = 0; i < len; i++)
