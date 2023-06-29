@@ -1,68 +1,71 @@
-#include <stdarg.h>
-#include <stdio.h>
 #include "main.h"
-#include <string.h>
-
 /**
- * _printf - my own printf
- * @format: is character string
- *
- * Return: lenght
+ * _printf - Entry point
+ * Desc: Entry
+ *@format: pointer
+ * Return: On success.
  */
 int _printf(const char *format, ...)
 {
-	int c, sum = 0, len = 0, i, len1 = 0, o;
 	va_list args;
-	char *s;
+	unsigned int i = 0, j = 0;
+
+	if (!format || (format[0] == '%' && format[1] == '\0'))
+		return (-1);
 
 	va_start(args, format);
-
-	len = strlen(format);
-
-	if (format[0] == '%' && format[1] == ' ' && format[2] == '\0')
-		return (-1);
-
-	if (format[0] == '%' && format[1] == '\0')
-		return (-1);
-
-	if (!format || (format[0] == '%' && !format[1]))
-		return (-1);
-
-	if (format[0] == '%' && format[1] == ' ' && !format[2])
-		return (-1);
-
-	for (i = 0; i < len; i++)
+	for (i = 0; format[i] != '\0'; i++)
 	{
-		if (format[i] != '%')
+		if (format[i] == '%')
+		{
+			if (format[i + 1] == '%')
+			{
+				_putchar('%');
+				j++;
+				i++;
+			}
+			else if (get_op_func(format, i + 1) != NULL)
+			{
+				j += (get_op_func(format, i + 1))(args);
+				i++;
+			}
+			else
+			{
+				_putchar(format[i]);
+				j++;
+			}
+		}
+		else
 		{
 			_putchar(format[i]);
-			sum++;
-		}
-		else if (format[i] == '%' && format[i + 1] == 's')
-		{
-			s = va_arg(args, char *);
-			len1 = strlen(s);
-			for (o = 0; o < len1; o++)
-			{
-				_putchar(s[o]);
-				sum++;
-			}
-			i++;
-		}
-		else if (format[i] == '%' && format[i + 1] == 'c')
-		{
-			c = va_arg(args, int);
-			_putchar(c);
-			sum++;
-			i++;
-		}
-		else if (format[i] == '%' && format[i + 1] == '%')
-		{
-			_putchar('%');
-			sum++;
-			i++;
+			j++;
 		}
 	}
 	va_end(args);
-	return (sum);
+	return (j);
+}
+/**
+ * get_op_func - Entry function
+ * @s: operator
+ * @pos: position
+ * Return: function
+ */
+int (*get_op_func(const char *s, int pos))(va_list)
+{
+	print_fun ops[] = {
+		{"c", print_single_char},
+		{"s", print_string_char},
+		{"d", print_decimal},
+		{"i", print_decimal},
+		{NULL, NULL}};
+	int k;
+
+	for (k = 0; ops[k].op != NULL; k++)
+	{
+		if (ops[k].op[0] == s[pos])
+		{
+			return (ops[k].f);
+		}
+	}
+	return (NULL);
 }
